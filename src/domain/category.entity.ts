@@ -19,6 +19,7 @@ export class Category {
   is_active: boolean;
   created_at: Date;
 
+  // isso é o que cria o objeto, o que vai ser passado pra ele
   constructor(props: CategoryConstructorProps) {
     this.category_id = props.category_id;
     this.name = props.name;
@@ -31,4 +32,31 @@ export class Category {
   static create(props: CreateCategoryCreateCommand): Category {
     return new Category(props)
   }
+
+  changeName(name: string) {
+    this.name = name
+  }
+
+  changeDescription(description: string) {
+    this.description = description
+  }
+
+  activate() {
+    this.is_active = true
+  }
+
+  desactivate() {
+    this.is_active = false
+  }
+
+  toJSON() {
+    return {
+      category_id: this.category_id,
+      name: this.name,
+      description: this.description,
+      is_active: this.is_active,
+      create_at: this.created_at
+    }
+  }
+
 }
