@@ -41,7 +41,6 @@ export class Category {
   }
 
   changeName(name: string) {
-    ValidatorRules.values(name, "name").required().string().maxLength(255)
     this.name = name
     Category.validate(this)
   }
