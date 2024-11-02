@@ -2,7 +2,12 @@ import { Uuid } from "../../../shared/domain/value-objects/uuid.vo"
 import { Category } from "../category.entity"
 
 describe("Category Unit Tests", () => {
-  test("shoul create a category with name and description", () => {
+  let validateSpy: any;
+  beforeEach(() => {
+    validateSpy = jest.spyOn(Category, "validate")
+  })
+  test("should create a category with name and description", () => {
+
     // Arrange Act Assert
     let category = Category.create({
       name: "Movie"
@@ -12,6 +17,7 @@ describe("Category Unit Tests", () => {
     expect(category.description).toBeNull()
     expect(category.is_active).toBeTruthy()
     expect(category.created_at).toBeInstanceOf(Date)
+    expect(validateSpy).toHaveBeenCalledTimes(1)
   })
 
   test("should create a category with all values", () => {
@@ -66,6 +72,7 @@ describe("Category Unit Tests", () => {
     category.changeName("Other name")
 
     expect(category.name).toBe("Other name")
+    expect(validateSpy).toHaveBeenCalledTimes(2)
   })
 
   test("should change description", () => {
@@ -75,6 +82,7 @@ describe("Category Unit Tests", () => {
 
     category.changeDescription("some description")
     expect(category.description).toBe("some description")
+    expect(validateSpy).toHaveBeenCalledTimes(2)
   })
 
   test("should active a category", () => {

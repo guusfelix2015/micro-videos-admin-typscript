@@ -34,16 +34,20 @@ export class Category {
 
   // Factory method
   static create(props: CreateCategoryCreateCommand): Category {
-    return new Category(props)
+    const category = new Category(props)
+    Category.validate(category)
+    return category
   }
 
   changeName(name: string) {
     ValidatorRules.values(name, "name").required().string().maxLength(255)
     this.name = name
+    Category.validate(this)
   }
 
   changeDescription(description: string) {
     this.description = description
+    Category.validate(this)
   }
 
   activate() {
