@@ -1,5 +1,7 @@
+import { Entity } from "../../shared/domain/entity";
 import { EntityValidationError } from "../../shared/domain/validators/validation.error";
 import ValidatorRules from "../../shared/domain/validators/validators-rules";
+import { ValueObject } from "../../shared/domain/value-object";
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
 import { CategoryValidatorFactory } from "./category.validator";
 
@@ -17,7 +19,7 @@ export type CreateCategoryCreateCommand = {
   is_active?: boolean;
 }
 
-export class Category {
+export class Category extends Entity {
   category_id: Uuid;
   name: string;
   description: string | null;
@@ -26,11 +28,16 @@ export class Category {
 
   // isso é o que cria o objeto, o que vai ser passado pra ele
   constructor(props: CategoryConstructorProps) {
+    super();
     this.category_id = props.category_id ?? new Uuid();
     this.name = props.name;
     this.description = props.description ?? null;
     this.is_active = props.is_active ?? true;
     this.created_at = props.created_at ?? new Date();
+  }
+
+  get entity_id(): ValueObject {
+    return this.category_id
   }
 
   // Factory method
