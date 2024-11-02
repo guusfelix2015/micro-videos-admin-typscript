@@ -1,3 +1,4 @@
+import { EntityValidationError } from "../../../shared/domain/validators/validation.error";
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo"
 import { Category } from "../category.entity"
 
@@ -124,5 +125,19 @@ describe("category_id field", () => {
     if (category_id instanceof Uuid) {
       expect(category.category_id).toBe(category_id)
     }
+  })
+})
+
+describe("Category Validator", () => {
+  test("should return error validation when name is null", () => {
+    expect(() => {
+      Category.create({
+        name: null
+      })
+    }).toThrow(
+      new EntityValidationError({
+        name: ["name is required"]
+      })
+    )
   })
 })
