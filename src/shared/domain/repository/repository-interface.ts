@@ -23,5 +23,4 @@ export interface ISearchableRepository<
 > extends IRepository<E, EntityId> {
   sortableFields: string[];
   search(props: SearchInput): Promise<SeachOutput>
-
 }
