@@ -1,7 +1,15 @@
 import { Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
 
+export type CategoryModelProps = {
+  category_id: string
+  name: string
+  description: string
+  is_active: boolean
+  created_at: Date
+}
+
 @Table({ tableName: "categories", timestamps: false })
-export class CategoryModel extends Model {
+export class CategoryModel extends Model<CategoryModelProps> {
   @PrimaryKey
   @Column({ type: DataType.UUID })
   declare category_id: string;
@@ -13,7 +21,7 @@ export class CategoryModel extends Model {
   declare description: string | null;
 
   @Column({ allowNull: false, type: DataType.BOOLEAN })
-  declare is_active: string;
+  declare is_active: boolean;
 
   @Column({ allowNull: false, type: DataType.DATE(3) }) // format utc
   declare created_at?: Date;
