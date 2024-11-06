@@ -1,8 +1,5 @@
 import { Op } from "sequelize";
-import { Entity } from "../../../../shared/domain/entity";
 import { NotFoundError } from "../../../../shared/domain/errors/not-found.error";
-import { SearchParams } from "../../../../shared/domain/repository/search-params";
-import { SearchResult } from "../../../../shared/domain/repository/search-result";
 import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../../../domain/category.entity";
 import { CategorySearchParams, CategorySearchResult, ICategoryRepository } from "../../../domain/category.repository";
