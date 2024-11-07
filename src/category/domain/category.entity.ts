@@ -1,7 +1,7 @@
 import { Entity } from "../../shared/domain/entity";
 import { EntityValidationError } from "../../shared/domain/validators/validation.error";
-import ValidatorRules from "../../shared/domain/validators/validators-rules";
 import { ValueObject } from "../../shared/domain/value-object";
+//import ValidatorRules from "../../shared/domain/validators/validator-rules";
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
 import { CategoryFakeBuilder } from "./category-fake.builder";
 import { CategoryValidatorFactory } from "./category.validator";
@@ -12,13 +12,13 @@ export type CategoryConstructorProps = {
   description?: string | null;
   is_active?: boolean;
   created_at?: Date;
-}
+};
 
-export type CreateCategoryCreateCommand = {
+export type CategoryCreateCommand = {
   name: string;
   description?: string | null;
   is_active?: boolean;
-}
+};
 
 export class Category extends Entity {
   category_id: Uuid;
@@ -27,7 +27,6 @@ export class Category extends Entity {
   is_active: boolean;
   created_at: Date;
 
-  // isso é o que cria o objeto, o que vai ser passado pra ele
   constructor(props: CategoryConstructorProps) {
     super();
     this.category_id = props.category_id ?? new Uuid();
@@ -38,45 +37,43 @@ export class Category extends Entity {
   }
 
   get entity_id(): ValueObject {
-    return this.category_id
+    return this.category_id;
   }
 
-  // Factory method
-  static create(props: CreateCategoryCreateCommand): Category {
-    const category = new Category(props)
-    Category.validate(category)
-    return category
+  static create(props: CategoryCreateCommand): Category {
+    const category = new Category(props);
+    Category.validate(category);
+    return category;
   }
 
-  changeName(name: string) {
-    this.name = name
-    Category.validate(this)
+  changeName(name: string): void {
+    this.name = name;
+    Category.validate(this);
   }
 
-  changeDescription(description: string) {
-    this.description = description
-    Category.validate(this)
+  changeDescription(description: string): void {
+    this.description = description;
+    Category.validate(this);
   }
 
   activate() {
-    this.is_active = true
+    this.is_active = true;
   }
 
-  desactivate() {
-    this.is_active = false
+  deactivate() {
+    this.is_active = false;
   }
 
   static validate(entity: Category) {
-    const validator = CategoryValidatorFactory.create()
-    const isValid = validator.validate(entity)
-
+    const validator = CategoryValidatorFactory.create();
+    const isValid = validator.validate(entity);
     if (!isValid) {
-      throw new EntityValidationError(validator.errors)
+      throw new EntityValidationError(validator.errors);
     }
   }
 
   static fake() {
-    return CategoryFakeBuilder
+    return CategoryFakeBuilder;
   }
 
   toJSON() {
@@ -85,8 +82,7 @@ export class Category extends Entity {
       name: this.name,
       description: this.description,
       is_active: this.is_active,
-      create_at: this.created_at
-    }
+      created_at: this.created_at,
+    };
   }
-
 }

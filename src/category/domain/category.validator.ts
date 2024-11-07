@@ -1,7 +1,14 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator"
+import {
+  MaxLength,
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsBoolean,
+} from "class-validator";
 import { Category } from "./category.entity";
 import { ClassValidatorFields } from "../../shared/domain/validators/class-validator-fields";
 
+//criar um testes que verifique os decorators
 export class CategoryRules {
   @MaxLength(255)
   @IsString()
@@ -17,7 +24,7 @@ export class CategoryRules {
   is_active: boolean;
 
   constructor({ name, description, is_active }: Category) {
-    Object.assign(this, { name, description, is_active })
+    Object.assign(this, { name, description, is_active });
   }
 }
 
@@ -29,6 +36,6 @@ export class CategoryValidator extends ClassValidatorFields<CategoryRules> {
 
 export class CategoryValidatorFactory {
   static create() {
-    return new CategoryValidator()
+    return new CategoryValidator();
   }
 }
