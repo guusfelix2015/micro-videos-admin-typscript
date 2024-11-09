@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "../category.model";
 import { CategorySequelizeRepository } from "../category-sequelize.repository";
 import { Category } from "../../../../domain/category.entity";
@@ -6,22 +5,18 @@ import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
 import { NotFoundError } from "../../../../../shared/domain/errors/not-found.error";
 import { CategoryModelMapper } from "../category-model-mapper";
 import { CategorySearchParams, CategorySearchResult } from "../../../../domain/category.repository";
+import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
 
 describe("CategorySequelizeRepository Integration Test", () => {
-  let sequelize;
   let repository: CategorySequelizeRepository;
 
-  beforeEach(async () => {
-    sequelize = new Sequelize({
-      dialect: "sqlite",
-      storage: ":memory:",
-      models: [CategoryModel],
-      logging: false,
-    });
-    await sequelize.sync({ force: true });
-    repository = new CategorySequelizeRepository(CategoryModel);
+  setupSequelize({
+    models: [CategoryModel]
   });
 
+  beforeEach(async () => {
+    repository = new CategorySequelizeRepository(CategoryModel);
+  });
   it("should inserts a new entity", async () => {
     let category = Category.fake().aCategory().build();
     await repository.insert(category);
@@ -90,11 +85,11 @@ describe("CategorySequelizeRepository Integration Test", () => {
         .withCreatedAt(created_at)
         .build();
       await repository.bulkInsert(categories);
-      const spyToAggregate = jest.spyOn(CategoryModelMapper, "toEntity");
+      const spyToEntity = jest.spyOn(CategoryModelMapper, "toEntity");
 
       const searchOutput = await repository.search(new CategorySearchParams());
       expect(searchOutput).toBeInstanceOf(CategorySearchResult);
-      expect(spyToAggregate).toHaveBeenCalledTimes(15);
+      expect(spyToEntity).toHaveBeenCalledTimes(15);
       expect(searchOutput.toJSON()).toMatchObject({
         total: 16,
         current_page: 1,
@@ -127,7 +122,6 @@ describe("CategorySequelizeRepository Integration Test", () => {
       const searchOutput = await repository.search(new CategorySearchParams());
       const items = searchOutput.items;
       [...items].reverse().forEach((item, index) => {
-        // verifica se o ultimo esta na primeira possição
         expect(`Movie ${index}`).toBe(`${categories[index + 1].name}`);
       });
     });
