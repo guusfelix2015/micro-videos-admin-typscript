@@ -2,6 +2,20 @@ import { IUseCase } from "../../shared/application/use-case.interface";
 import { Category } from "../domain/category.entity";
 import { ICategoryRepository } from "../domain/category.repository";
 
+export type CreateCategoryInput = {
+  name: string;
+  description?: string | null;
+  is_active?: boolean;
+}
+
+export type CreateCategoryOutput = {
+  id: string;
+  name: string;
+  description?: string | null;
+  is_active?: boolean;
+  created_at: Date;
+}
+
 export class CreateCategoryUseCase
   implements IUseCase<CreateCategoryInput, CreateCategoryOutput> {
   constructor(private readonly categoryRepo: ICategoryRepository) { }
@@ -22,16 +36,3 @@ export class CreateCategoryUseCase
 
 }
 
-export type CreateCategoryInput = {
-  name: string;
-  description?: string | null;
-  is_active?: boolean;
-}
-
-export type CreateCategoryOutput = {
-  id: string;
-  name: string;
-  description?: string | null;
-  is_active?: boolean;
-  created_at: Date;
-}
