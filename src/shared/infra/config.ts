@@ -6,6 +6,7 @@ export class Config {
 
   static db() {
     Config.readEnv();
+
     return {
       dialect: 'sqlite' as any,
       host: Config.env.DB_HOST,
